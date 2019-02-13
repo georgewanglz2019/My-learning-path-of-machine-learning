@@ -1,1 +1,90 @@
 
+# coding: utf-8
+
+# In[5]:
+
+
+#1. 建立工程，导入sklearn相关包
+
+import numpy as np
+from sklearn.cluster import KMeans
+
+
+# In[6]:
+
+
+#2. 加载数据，创建K-means算法实例，并进行训练，获得标签
+# 重点解释：data,cityName = loadData('E:\\BaiduNetdiskDownload\\mooc课程数据\\课程数据\\聚类\\city.txt')
+
+def loadData(filePath):
+    fr = open(filePath,'r+')    # r+ :读写打开一个文本文件
+    lines = fr.readlines()      # .readlines():  依次读取每行，一次读取整个文件
+    retData = []                 # .readline():  每次只读取一行，比readlines()慢得多，仅当内存不足一次读取才使用
+    retCityName = []
+    for line in lines:
+        items = line.strip().split(',')
+        retCityName.append(items[0])
+        retData.append([float(items[i]) for i in range(1,len(items))])
+    for i in range(1,len(items)):
+        return retData,retCityName
+    
+
+
+# In[9]:
+
+
+#2. 加载数据，创建K-means算法实例，并进行训练，获得标签
+
+if __name__ == '__main__':
+    data,cityName = loadData('E:\\BaiduNetdiskDownload\\mooc课程数据\\课程数据\\聚类\\city.txt')
+    km = KMeans(n_clusters = 6)
+    label = km.fit_predict(data)
+    expenses = np.sum(km.cluster_centers_,axis = 1)
+    #print(expenses)
+    CityCluster = [[],[],[],[],[],[]]
+    for i in range(len(cityName)):
+        CityCluster[label[i]].append(cityName[i])
+    for i in range(len(CityCluster)):
+        print("Expenses:%.2f" %expenses[i])
+        print(CityCluster[i])
+
+#1. 利用loadData方法读取数据
+#2. 创建实例
+#3. 调用Kmeans() fit_predict()方法进行计算
+
+
+# In[2]:
+
+
+# 完整代码
+
+import numpy as np
+from sklearn.cluster import KMeans
+ 
+ 
+def loadData(filePath):
+    fr = open(filePath,'r+')
+    lines = fr.readlines()
+    retData = []
+    retCityName = []
+    for line in lines:
+        items = line.strip().split(",")
+        retCityName.append(items[0])
+        retData.append([float(items[i]) for i in range(1,len(items))])
+    return retData,retCityName
+ 
+     
+if __name__ == '__main__':
+    data,cityName = loadData('E:\\BaiduNetdiskDownload\\mooc课程数据\\课程数据\\聚类\\city.txt')
+    km = KMeans(n_clusters=6)
+    label = km.fit_predict(data)
+    expenses = np.sum(km.cluster_centers_,axis=1)
+    #print(expenses)
+    CityCluster = [[],[],[],[],[],[]]
+    for i in range(len(cityName)):
+        CityCluster[label[i]].append(cityName[i])
+    for i in range(len(CityCluster)):
+        print("Expenses:%.2f" % expenses[i])
+        print(CityCluster[i])
+
+
